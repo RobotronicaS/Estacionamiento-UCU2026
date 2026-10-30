@@ -1,0 +1,68 @@
+{
+  "sitio": {
+    "name": "UCU Salto · estacionamiento del fondo",
+    "lat": -31.389172,
+    "lon": -57.958842,
+    "zoom": 20,
+    "source": "https://maps.app.goo.gl/NSXLWDAJGod3SWo6A",
+    "layout": "propuesta, no relevada",
+    "width": 2.5,
+    "length": 5
+  },
+  "plazas": [
+    {
+      "id": "E001",
+      "etiqueta": "P1",
+      "lat": -31.38913786417535,
+      "lon": -57.95895249347723,
+      "ancho_m": 2.5,
+      "largo_m": 5,
+      "distribucion": "propuesta, no relevada"
+    },
+    {
+      "id": "E002",
+      "etiqueta": "P2",
+      "lat": -31.38913786417535,
+      "lon": -57.95892513318763,
+      "ancho_m": 2.5,
+      "largo_m": 5,
+      "distribucion": "propuesta, no relevada"
+    },
+    {
+      "id": "E003",
+      "etiqueta": "P3",
+      "lat": -31.38913786417535,
+      "lon": -57.95889777289803,
+      "ancho_m": 2.5,
+      "largo_m": 5,
+      "distribucion": "propuesta, no relevada"
+    },
+    {
+      "id": "E004",
+      "etiqueta": "P4",
+      "lat": -31.38913786417535,
+      "lon": -57.95887041260843,
+      "ancho_m": 2.5,
+      "largo_m": 5,
+      "distribucion": "propuesta, no relevada"
+    },
+    {
+      "id": "E005",
+      "etiqueta": "P5",
+      "lat": -31.38913786417535,
+      "lon": -57.95884305231883,
+      "ancho_m": 2.5,
+      "largo_m": 5,
+      "distribucion": "propuesta, no relevada"
+    },
+    {
+      "id": "E006",
+      "etiqueta": "P6",
+      "lat": -31.38913786417535,
+      "lon": -57.958815692029226,
+      "ancho_m": 2.5,
+      "largo_m": 5,
+      "distribucion": "propuesta, no relevada"
+    }
+  ]
+}

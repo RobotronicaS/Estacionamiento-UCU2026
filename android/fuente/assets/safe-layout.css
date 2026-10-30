@@ -1,0 +1,13 @@
+/* The native FrameLayout reserves Android's bars; these CSS insets cover web previews too. */
+:root{--app-nav-height:76px}
+.app{min-height:100vh;min-height:100dvh;padding-bottom:calc(var(--app-nav-height) + 20px + env(safe-area-inset-bottom,0px))}
+.bottom-nav{height:calc(var(--app-nav-height) + env(safe-area-inset-bottom,0px));padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));bottom:0}
+.nav-item{min-height:48px;touch-action:manipulation}
+.map-layers{position:absolute;left:12px;top:49px;display:flex;z-index:6;border-radius:8px;padding:3px;gap:2px;background:#fffffff5;box-shadow:0 2px 8px #17342e18}
+.map-layers button{padding:6px 9px;font-size:10px;font-weight:600;border-radius:6px;min-height:28px}
+.map-layers button.active{background:#142b37;color:white}
+.map.satellite .map-fallback{background:#dce4dc}
+.map.satellite .ucu-bay{background:rgba(0,121,91,.82);border-color:white;text-shadow:0 1px 2px #13382c}
+.map.satellite .ucu-bay.ocupado{background:rgba(163,48,68,.82)}
+.map.satellite .ucu-bay.desconocido{background:repeating-linear-gradient(45deg,#5c6b72d9,#5c6b72d9 4px,#88969dd9 4px,#88969dd9 8px)}
+.map .attribution{max-width:100%;font-size:7.5px;line-height:1.45;white-space:normal;text-align:right;background:#ffffffe6;padding:3px 5px;z-index:8}

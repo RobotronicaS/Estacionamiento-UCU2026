@@ -1,0 +1,168 @@
+COMANDOS DE LAS DOS LAMINAS A3 — EDICION 21/10/2026
+Leer contexto y usuario; los bloques son independientes y no forman un script unico.
+Instalador completo: rpi/instalar_estacionamiento_ucu.sh
+Verificador completo: rpi/verificar_despues_reinicio.sh
+La ruta ZIP/SCP esta preparada; la ejecucion acreditada uso el bloque pegado en Bash.
+
+LAMINA 1 — PASO 1 — DOCENTE · IMAGER Y POWERSHELL
+Start-Process 'https://tailscale.com/download/windows'
+ping -4 ucu2026.local
+ssh ucu2026@ucu2026.local
+
+LAMINA 1 — PASO 2 — RPi5 · BASH · DOCENTE ucu2026
+hostnamectl
+sudo apt-get update
+sudo apt-get install -y curl ca-certificates openssh-server python3-venv
+sudo systemctl enable --now ssh
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo systemctl enable --now tailscaled
+sudo tailscale up
+tailscale status
+tailscale ip -4
+sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+LAMINA 1 — PASO 3 — RPi5 · BASH · DOCENTE ucu2026
+for n in 1 2 3 4; do
+ cuenta="grupo$n"
+ if ! getent passwd "$cuenta" >/dev/null; then
+  sudo useradd --create-home --user-group \
+   --shell /bin/bash "$cuenta"
+  sudo passwd "$cuenta"
+ fi
+done
+getent passwd grupo1 grupo2 grupo3 grupo4
+
+LAMINA 1 — PASO 4 — PC POWERSHELL → RPi5 BASH
+$zip = "$env:USERPROFILE\Downloads\" + `
+ 'Estacionamiento_UCU_Paquete_Completo.zip'
+$dir = "$env:USERPROFILE\Downloads\Estacionamiento_UCU"
+Expand-Archive -LiteralPath $zip -DestinationPath $dir
+scp -r "$dir\rpi" ucu2026@ucu2026.local:
+ssh ucu2026@ucu2026.local
+
+LAMINA 1 — PASO 4 — PC POWERSHELL → RPi5 BASH
+bash ~/rpi/instalar_estacionamiento_ucu.sh
+
+LAMINA 1 — PASO 5 — RPi5 · BASH · EJEMPLO grupo1
+g=grupo1
+base="/home/$g/PI2/estacionamiento"
+sudo install -d -o "$g" -g "$g" -m 0750 \
+ "/home/$g/PI2" "$base"
+sudo install -o "$g" -g "$g" -m 0640 \
+ ~/PI2_instalacion/servidor_estacionamiento.py "$base/"
+sudo install -o "$g" -g "$g" -m 0640 \
+ ~/PI2_instalacion/requirements.txt "$base/"
+sudo -H -u "$g" bash -c '
+ cd "$1"
+ python3 -m venv .venv
+ .venv/bin/python -m pip install -r requirements.txt
+' bash "$base"
+
+LAMINA 1 — PASO 6 — RPi5 · BASH · DOCENTE ucu2026
+CF_KEY='/usr/share/keyrings/cloudflare-main.gpg'
+CF_REPO='https://pkg.cloudflare.com/cloudflared'
+sudo mkdir -p --mode=0755 /usr/share/keyrings
+curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg \
+ | sudo tee "$CF_KEY" >/dev/null
+sudo chmod 0644 "$CF_KEY"
+printf 'deb [signed-by=%s] %s any main\n' \
+ "$CF_KEY" "$CF_REPO" | sudo tee \
+ /etc/apt/sources.list.d/cloudflared.list
+sudo apt-get update
+sudo apt-get install -y cloudflared
+cloudflared --version
+
+LAMINA 2 — PASO 7 — RPi5 · BASH · DOCENTE ucu2026
+sudo install -m 0644 ~/rpi/estacionamiento@.service \
+ /etc/systemd/system/estacionamiento@.service
+sudo install -m 0644 ~/rpi/estacionamiento-tunel@.service \
+ /etc/systemd/system/estacionamiento-tunel@.service
+sudo systemctl daemon-reload
+
+LAMINA 2 — PASO 8 — RPi5 · BASH · CORTA LA SESIÓN SSH
+for n in 1 2 3 4; do
+ sudo systemctl enable "estacionamiento@$n" \
+  "estacionamiento-tunel@$n"
+ sudo systemctl restart "estacionamiento@$n" \
+  "estacionamiento-tunel@$n"
+done
+sudo reboot
+
+LAMINA 2 — PASO 9 — RPi5 · BASH · DOCENTE ucu2026
+bash ~/rpi/verificar_despues_reinicio.sh
+cat ~/PI2_instalacion/direcciones_apk.txt
+
+LAMINA 2 — PASO 11 — RPi5 · BASH · CONSULTA
+systemctl list-units --all --no-pager 'estacionamiento*'
+sudo ss -ltnp '( sport = :5001 )'
+systemctl status estacionamiento@1 --no-pager -l
+sudo journalctl -u estacionamiento@1 -n 20 --no-pager
+sudo journalctl -b -u estacionamiento-tunel@1 \
+ -n 30 --no-pager
+
+LAMINA 2 — PASO 12 — DOCENTE · CLOUDFLARE · NO EJECUTADO EN ESTA PRUEBA
+read -rs -p 'Token del tunel: ' CF_TUNNEL_TOKEN
+printf '\n'
+sudo cloudflared service install "$CF_TUNNEL_TOKEN"
+unset CF_TUNNEL_TOKEN
+sudo systemctl enable --now cloudflared
+systemctl is-active cloudflared
+
+
+
+=== AMPLIACION: GUIA DEL ZIP, 21/10/2026 ===
+Opciones independientes. Elegir instalar o verificar; no ejecutar todo este TXT como un script.
+
+--- extraer | powershell ---
+$descargas = Join-Path $env:USERPROFILE 'Downloads'
+$zip = Join-Path $descargas `
+  'Estacionamiento_UCU_Paquete_Completo.zip'
+$carpeta = Join-Path $descargas 'Estacionamiento_UCU'
+Expand-Archive -LiteralPath $zip -DestinationPath $carpeta
+Get-ChildItem -LiteralPath $carpeta
+
+--- comprobar_windows | powershell ---
+Test-Path "$carpeta\rpi\instalar_estacionamiento_ucu.sh"
+Test-Path "$carpeta\rpi\verificar_despues_reinicio.sh"
+
+--- copiar_entrar | powershell ---
+scp -r "$carpeta\rpi" ucu2026@ucu2026.local:
+ssh ucu2026@ucu2026.local
+
+--- comprobar_rpi | bash ---
+whoami
+ls -l ~/rpi/instalar_estacionamiento_ucu.sh \
+  ~/rpi/verificar_despues_reinicio.sh
+
+--- instalar | bash ---
+bash ~/rpi/instalar_estacionamiento_ucu.sh
+
+--- verificar | bash ---
+bash ~/rpi/verificar_despues_reinicio.sh
+cat ~/PI2_instalacion/direcciones_apk.txt
+
+--- reiniciar | bash ---
+sudo reboot
+
+--- reconectar | powershell ---
+ssh ucu2026@100.72.228.96
+
+--- diagnostico | bash ---
+sudo journalctl -u estacionamiento@1 -n 30 --no-pager
+sudo journalctl -b -u estacionamiento-tunel@1 \
+  -n 30 --no-pager
+
+--- prueba_local | bash ---
+python3 ~/rpi/prueba_local.py
+
+--- prueba_publica | bash ---
+url=$(sed -n 's/^Equipo 1: //p' \
+  ~/PI2_instalacion/direcciones_apk.txt)
+curl -fsS --connect-timeout 5 --max-time 20 \
+  "$url/api/estado?grupo=1" \
+  -o "$HOME/PI2_instalacion/estado_actual_grupo1.json" &&
+python3 ~/rpi/prueba_publica.py 1 \
+  "$HOME/PI2_instalacion/estado_actual_grupo1.json"
+
+
+AMPLIACION: los comandos por cuenta de las paginas 6-10 estan en COMANDOS_GRUPOS.txt y GUIA_TRABAJO_INDEPENDIENTE.md.

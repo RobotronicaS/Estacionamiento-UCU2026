@@ -1,0 +1,23 @@
+AMPLIACION DE TRABAJO INDEPENDIENTE - 21/10/2026
+
+PDF: cinco paginas originales conservadas; cinco anexos nuevos (D-H).
+Se compararon los streams de contenido y MediaBox de las primeras cinco
+paginas al incorporar los anexos. El servidor, instalador general, plantillas
+anteriores y APK se conservan.
+
+14 pruebas de unittest aprobadas en un entorno local Windows con Python 3.11.
+Ver pruebas/test_trabajo_independiente.py. Incluyen alcance de unidades,
+identidad y argumentos, URL por InvocationID, respaldo sin .venv, rechazo de
+otro grupo y rutas fuera del proyecto, restauracion, reversion ante fallo
+y separacion de estados del simulador.
+Los comandos privilegiados y la creacion de dependencias se simulan.
+La compilacion de los dos scripts Python nuevos aprobo.
+
+No se ejecuto el script de preparacion Bash en Linux: el shell Linux no esta
+disponible en este entorno. Se reviso su contenido, pero su validacion en la
+Raspberry, sudoers, systemd, las cuatro sesiones y la APK sigue pendiente.
+Las pruebas historicas del 21/10 se mantienen en su bitacora y no se atribuyen
+a esta ruta nueva.
+
+No se implementaron adquisicion real MPF-1/sensores, almacenamiento
+persistente ni dominio fijo. El historial base sigue en memoria.

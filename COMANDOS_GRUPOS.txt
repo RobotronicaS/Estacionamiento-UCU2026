@@ -1,0 +1,82 @@
+ESTACIONAMIENTO UCU - COMANDOS POR GRUPO
+Leer GUIA_TRABAJO_INDEPENDIENTE.md antes de copiar.
+Cada bloque pertenece a la terminal y usuario de su seccion.
+GESTION_PI2 se define de nuevo al reconectar.
+
+2. Preparación única del docente
+$zip = Join-Path $env:USERPROFILE 'Downloads\Estacionamiento_UCU_Paquete_Completo.zip'
+$carpeta = Join-Path $env:USERPROFILE 'Downloads\Estacionamiento_UCU_4grupos'
+Expand-Archive -LiteralPath $zip -DestinationPath $carpeta
+Test-Path "$carpeta\rpi\preparar_grupos_independientes.sh"
+scp -r "$carpeta\rpi" ucu2026@100.72.228.96:
+ssh ucu2026@100.72.228.96
+
+2. Preparación única del docente
+whoami
+tailscale ip -4
+bash ~/rpi/preparar_grupos_independientes.sh
+
+2. Preparación única del docente
+getent passwd grupo1 grupo2 grupo3 grupo4
+sudo visudo -cf /etc/sudoers
+sudo -l -U grupo1
+ls -ld /home/grupo1 /home/grupo1/PI2
+
+3. Cada estudiante entra con su propia cuenta
+ssh grupo1@100.72.228.96
+ssh grupo2@100.72.228.96
+ssh grupo3@100.72.228.96
+ssh grupo4@100.72.228.96
+
+3. Cada estudiante entra con su propia cuenta
+whoami
+echo "$HOME"
+GESTION_PI2=/usr/local/share/estacionamiento-ucu/mi_grupo.py
+
+4. Instalar la propia copia
+python3 "$GESTION_PI2" instalar
+python3 "$GESTION_PI2" comprobar
+python3 "$GESTION_PI2" estado
+
+4. Instalar la propia copia
+python3 "$GESTION_PI2" estado
+python3 "$GESTION_PI2" comprobar
+
+4. Instalar la propia copia
+python3 "$GESTION_PI2" preparar-entorno
+python3 "$GESTION_PI2" comprobar
+
+4. Instalar la propia copia
+OK grupo1: seis plazas simuladas, lectura vigente, historial y rechazo de otro grupo. LOCAL
+
+5. Programar y operar el propio servidor
+cd ~/PI2/estacionamiento
+python3 "$GESTION_PI2" respaldar
+nano servidor_estacionamiento.py
+.venv/bin/python -m py_compile servidor_estacionamiento.py
+python3 "$GESTION_PI2" reiniciar
+python3 "$GESTION_PI2" comprobar
+
+5. Programar y operar el propio servidor
+python3 "$GESTION_PI2" estado
+python3 "$GESTION_PI2" iniciar
+python3 "$GESTION_PI2" detener
+python3 "$GESTION_PI2" reiniciar
+python3 "$GESTION_PI2" mensajes
+python3 "$GESTION_PI2" url
+
+6. Dirección HTTPS y APK de cada grupo
+python3 "$GESTION_PI2" url
+python3 "$GESTION_PI2" comprobar --publica
+
+7. Respaldar y recuperar el trabajo propio
+python3 "$GESTION_PI2" respaldar
+python3 "$GESTION_PI2" listar-respaldos
+
+7. Respaldar y recuperar el trabajo propio
+python3 "$GESTION_PI2" restaurar NOMBRE_REAL_DEL_RESPALDO.zip
+python3 "$GESTION_PI2" comprobar
+python3 "$GESTION_PI2" url
+
+7. Respaldar y recuperar el trabajo propio
+scp grupo1@100.72.228.96:/home/grupo1/PI2/respaldos/NOMBRE_REAL_DEL_RESPALDO.zip .

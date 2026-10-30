@@ -1,0 +1,20 @@
+[Unit]
+Description=Estacionamiento UCU - grupo %i
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=grupo%i
+Group=grupo%i
+WorkingDirectory=/home/grupo%i/PI2/estacionamiento
+ExecStart=/home/grupo%i/PI2/estacionamiento/.venv/bin/python \
+ /home/grupo%i/PI2/estacionamiento/servidor_estacionamiento.py \
+ --grupo %i --host 0.0.0.0
+Restart=on-failure
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

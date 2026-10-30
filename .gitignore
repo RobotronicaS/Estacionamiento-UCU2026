@@ -1,0 +1,30 @@
+# Secretos y firmas locales
+.env
+.env.*
+!.env.example
+**/signing/
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+credentials*.json
+connector.clixml
+
+# Entornos y archivos generados
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+node_modules/
+build/
+dist/
+output/
+test_temp/
+respaldos/
+anteriores/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

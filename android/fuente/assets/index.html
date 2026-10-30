@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+  <meta name="theme-color" content="#f4f7f8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://services.arcgisonline.com; connect-src https:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Estaciona Salto</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="safe-layout.css">
+  <script defer src="core.js"></script>
+  <script defer src="ucu-map.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brandmark" aria-hidden="true">P<span>•</span></div>
+      <div class="brand"><strong>estaciona<span>salto</span></strong><small>PROYECTO INTEGRADOR 2 · UCU</small></div>
+      <button class="icon-button" id="refresh" aria-label="Actualizar datos"><span data-icon="refresh"></span></button>
+    </header>
+    <div class="connection-strip"><span class="status-dot demo" id="status-dot"></span><span id="connection-label">Demostración</span><span class="group-pill" id="group-label">Equipo 1</span></div>
+    <main>
+      <section id="page-map" class="page active" aria-label="Mapa">
+        <div class="heading"><div><span class="eyebrow">UNIVERSIDAD CATÓLICA · SALTO</span><h1 class="ucu-title">Estacionamiento UCU.</h1><p>Seis plazas en el patio del fondo, junto a Misiones.</p></div></div>
+        <div class="stats" aria-live="polite"><div class="stat free"><span class="mini-dot"></span><strong id="count-free">—</strong><span>Libres</span></div><div class="stat busy"><span class="mini-dot"></span><strong id="count-busy">—</strong><span>Ocupadas</span></div><div class="stat unknown"><span class="mini-dot"></span><strong id="count-unknown">—</strong><span>Sin datos</span></div></div>
+        <div class="map-toolbar"><strong>Mapa de plazas</strong><button class="text-button" id="center-map"><span data-icon="focus"></span> Centrar</button></div>
+        <div class="map" id="map" role="region" aria-label="Mapa interactivo de estacionamientos">
+          <div class="map-fallback" id="map-fallback"><span>Mapa base sin conexión</span><small>Las ubicaciones siguen disponibles.</small></div>
+          <div class="tiles" id="tiles" aria-hidden="true"></div>
+          <div class="map-grid" aria-hidden="true"></div>
+          <div class="markers" id="markers"></div>
+          <div class="map-corner"><span data-icon="pin"></span> UCU · PATIO DEL FONDO</div>
+          <div class="map-layers" role="group" aria-label="Tipo de mapa"><button id="layer-satellite" class="active" aria-pressed="true">Satélite</button><button id="layer-street" aria-pressed="false">Calles</button></div>
+          <div class="zoom-controls"><button id="zoom-in" aria-label="Acercar mapa">+</button><button id="zoom-out" aria-label="Alejar mapa">−</button></div>
+          <a class="attribution" id="map-attribution" href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" target="_blank" rel="noopener">Imágenes © Esri · Maxar · Earthstar Geographics · GIS User Community</a>
+        </div>
+        <div class="map-legend"><span><i class="legend-dot free"></i>Libre</span><span><i class="legend-dot busy"></i>Ocupada</span><span><i class="legend-dot unknown"></i>Sin datos</span></div>
+        <p class="ucu-caption"><strong>Ubicación confirmada</strong> · P1–P6: distribución propuesta, por relevar.</p>
+        <div class="selected-card" id="selected-card"></div>
+        <div class="notice demo-notice" id="demo-notice"><span data-icon="info"></span><div><strong>Estás viendo una demostración</strong><p>Estados simulados y ubicaciones de ejemplo. No indican disponibilidad real.</p></div></div>
+        <div class="notice error-notice" id="error-notice" hidden><span data-icon="info"></span><div><strong id="error-title">Sin conexión con el servidor</strong><p id="error-text"></p></div></div>
+        <p class="update-caption" id="last-update">Esperando la primera lectura…</p>
+      </section>
+      <section id="page-places" class="page" aria-label="Plazas">
+        <div class="heading"><span class="eyebrow">DISPONIBILIDAD</span><h1>Cada lugar cuenta.</h1><p>El estado de todas las plazas de tu equipo.</p></div>
+        <div class="filters" id="filters"><button class="filter active" data-filter="todas">Todas</button><button class="filter" data-filter="libre">Libres</button><button class="filter" data-filter="ocupado">Ocupadas</button><button class="filter" data-filter="desconocido">Sin datos</button></div>
+        <div id="places-list" class="places-list"></div>
+      </section>
+      <section id="page-history" class="page" aria-label="Historial">
+        <div class="heading"><span class="eyebrow">ÚLTIMOS MOVIMIENTOS</span><h1>Lo que va pasando.</h1><p>Cambios registrados en las plazas.</p></div>
+        <div class="history-header"><strong>Actividad reciente</strong><span class="small-badge" id="history-count">0 eventos</span></div>
+        <div class="notice demo-notice history-demo"><span data-icon="info"></span><p>En demostración, este historial se genera en el teléfono.</p></div>
+        <div id="history-list" class="history-list"></div>
+      </section>
+      <section id="page-settings" class="page" aria-label="Ajustes">
+        <div class="heading"><span class="eyebrow">TU CONEXIÓN</span><h1>Todo en su lugar.</h1><p>La conexión del estacionamiento ya viene configurada.</p></div>
+        <form id="settings-form" class="settings-card">
+          <label class="switch-row"><span><strong>Modo demostración</strong><small>Probar la aplicación con datos simulados</small></span><input type="checkbox" id="demo-mode"><span class="switch" aria-hidden="true"></span></label>
+          <label class="field" for="server-url">Dirección del servidor HTTPS<input type="url" id="server-url" placeholder="https://tu-dominio" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false"><small>El dominio de la aplicación publicado con Cloudflare.</small></label>
+          <label class="field" for="group-select">Equipo<select id="group-select"><option value="1">Equipo 1</option><option value="2">Equipo 2</option><option value="3">Equipo 3</option><option value="4">Equipo 4</option></select></label>
+          <div class="form-error" id="form-error" role="alert" hidden></div>
+          <button class="primary-button" type="submit"><span data-icon="check"></span> Guardar y conectar</button>
+        </form>
+        <div class="about-card"><div class="about-icon" data-icon="shield"></div><strong>Una conexión para cada parte</strong><p>La notebook envía datos a la Raspberry por Tailscale. Esta aplicación consulta la Raspberry por HTTPS a través de Cloudflare.</p><p>La app solo consulta datos. No contiene el token que usa la notebook para enviar lecturas.</p></div>
+        <div class="version">Estaciona Salto <span>v0.1.3 · Proyecto Integrador 2</span></div>
+      </section>
+    </main>
+    <nav class="bottom-nav" aria-label="Navegación principal"><button class="nav-item active" data-page="map"><span data-icon="map"></span><span>Mapa</span></button><button class="nav-item" data-page="places"><span data-icon="grid"></span><span>Plazas</span></button><button class="nav-item" data-page="history"><span data-icon="clock"></span><span>Historial</span></button><button class="nav-item" data-page="settings"><span data-icon="settings"></span><span>Ajustes</span></button></nav>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+</body>
+</html>
