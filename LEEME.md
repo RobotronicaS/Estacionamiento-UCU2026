@@ -1,3 +1,9 @@
+# Estudiantes de primer año: empezar aquí
+
+La Raspberry y las cuentas ya están preparadas. Seguir [la guía sencilla de la primera práctica](EMPEZAR_AQUI.md), con los pasos para cada grupo y ayuda ante errores. El contenido siguiente se conserva como referencia técnica de la entrega anterior.
+
+---
+
 # Ampliacion: cuatro grupos independientes - 21/10/2026
 
 Para que cada grupo instale y mantenga su propia copia, empezar por

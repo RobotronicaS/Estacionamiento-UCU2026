@@ -1,5 +1,7 @@
 # Estacionamiento UCU: cuatro grupos independientes
 
+> **Estudiantes de primer año:** seguir primero [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md). Allí están el acceso de cada grupo, la instalación individual, las comprobaciones y la conexión de la APK. Esta página conserva los detalles técnicos y la preparación común del docente.
+
 Proyecto Integrador 2 - UCU Salto - 21/10/2026
 
 Esta ampliación corresponde exclusivamente al ESTACIONAMIENTO. Las páginas

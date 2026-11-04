@@ -1,3 +1,9 @@
+# Primera práctica de estudiantes
+
+Comenzar por [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md). La Raspberry y las cuentas de grupo ya están preparadas. Los apartados siguientes explican el paquete y la instalación general como material de consulta para el docente.
+
+---
+
 # Ampliacion: cuatro grupos independientes - 21/10/2026
 
 Para que cada grupo instale y mantenga su propia copia, empezar por

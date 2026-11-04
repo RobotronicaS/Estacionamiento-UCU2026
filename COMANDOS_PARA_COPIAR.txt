@@ -1,4 +1,7 @@
 COMANDOS DE LAS DOS LAMINAS A3 — EDICION 21/10/2026
+ESTUDIANTES: seguir EMPEZAR_AQUI.md para la Raspberry ya preparada.
+Este archivo conserva comandos de instalacion general y referencia docente.
+Ayuda para la primera practica: docs/AYUDA_ESTUDIANTES.md.
 Leer contexto y usuario; los bloques son independientes y no forman un script unico.
 Instalador completo: rpi/instalar_estacionamiento_ucu.sh
 Verificador completo: rpi/verificar_despues_reinicio.sh

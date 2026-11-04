@@ -1,5 +1,9 @@
 ESTACIONAMIENTO UCU - COMANDOS POR GRUPO
-Leer GUIA_TRABAJO_INDEPENDIENTE.md antes de copiar.
+ESTUDIANTES: seguir primero EMPEZAR_AQUI.md.
+La Raspberry y las cuentas ya estan preparadas para la clase.
+Los bloques siguientes son referencia tecnica; incluyen preparacion docente.
+Ayuda: docs/AYUDA_ESTUDIANTES.md.
+Leer GUIA_TRABAJO_INDEPENDIENTE.md para el contexto de estos bloques.
 Cada bloque pertenece a la terminal y usuario de su seccion.
 GESTION_PI2 se define de nuevo al reconectar.
 

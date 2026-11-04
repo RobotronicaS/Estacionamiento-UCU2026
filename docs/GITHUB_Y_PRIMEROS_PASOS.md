@@ -1,5 +1,7 @@
 # GitHub y primeros pasos
 
+> **Para la clase con Raspberry ya preparada:** los estudiantes siguen [la guía paso a paso](../EMPEZAR_AQUI.md). Esta página corresponde a preparación, distribución y colaboración administradas por el docente. Ver también [la comprobación docente](PARA_EL_DOCENTE.md).
+
 ## Descargar y ubicar los archivos
 
 1. Iniciar sesión en GitHub y abrir <https://github.com/RobotronicaS/Estacionamiento-UCU2026>.

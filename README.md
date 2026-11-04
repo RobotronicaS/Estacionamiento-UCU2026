@@ -1,5 +1,50 @@
 # Estacionamiento UCU 2026
 
+## Estudiantes: empezar aquí
+
+### [Abrir la guía paso a paso](EMPEZAR_AQUI.md)
+
+**Objetivo de la primera práctica:** ver en el celular las seis plazas con los datos de su propio servidor.
+
+La Raspberry Pi y las cuatro cuentas de grupo están preparadas. Cada grupo entra desde su PC por Tailscale y trabaja en su propia cuenta. La guía explica qué copiar, dónde escribirlo y qué resultado debe aparecer.
+
+| Recorrido | Dónde se hace |
+| --- | --- |
+| 1. Descargar el proyecto | PC Windows |
+| 2. Entrar con la cuenta del grupo | PowerShell de Windows |
+| 3. Instalar la copia del grupo | Dentro de la Raspberry |
+| 4. Comprobar las seis plazas | Dentro de la Raspberry |
+| 5. Obtener la dirección del servidor | Dentro de la Raspberry |
+| 6. Conectar la aplicación | Teléfono Android |
+
+**Seguir [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md) en ese orden.** Si la copia ya estaba instalada, la guía indica cómo continuar conservando el trabajo existente.
+
+## Ayuda y siguiente práctica
+
+- [Tengo un error: buscar el mensaje y resolverlo](docs/AYUDA_ESTUDIANTES.md).
+- [Ya funciona: hacer un primer cambio y guardar un respaldo](docs/PRIMER_CAMBIO_Y_RESPALDO.md).
+- [Docente: revisar accesos y preparación común](docs/PARA_EL_DOCENTE.md).
+
+## Qué estamos construyendo
+
+El servidor es un programa Python que se ejecuta en la Raspberry. Genera estados de seis plazas y los envía a la app cuando esta los consulta. GitHub guarda el código y las guías.
+
+En esta etapa los datos son **simulados**: cambian automáticamente para poder practicar. La conexión MPF-1, los sensores y el almacenamiento permanente se incorporarán en etapas posteriores. La ubicación de las seis plazas en el mapa es una propuesta pendiente de relevamiento.
+
+| Grupo | Cuenta en la Raspberry | Puerto de su servidor | Equipo en la app |
+| --- | --- | --- | --- |
+| 1 | grupo1 | 5001 | Equipo 1 |
+| 2 | grupo2 | 5002 | Equipo 2 |
+| 3 | grupo3 | 5003 | Equipo 3 |
+| 4 | grupo4 | 5004 | Equipo 4 |
+
+Cada grupo desarrolla su copia de las mismas seis plazas E001-E006. Todos comparten la Raspberry, su red y sus recursos.
+
+<details>
+<summary>Referencia técnica, preparación docente y material complementario</summary>
+
+La primera práctica de estudiantes comienza en [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md). Los apartados siguientes conservan la documentación técnica para consulta posterior.
+
 Proyecto Integrador 2 de Microprocesadores — UCU Salto.
 
 Servidor Python en Raspberry Pi y aplicación Android para consultar seis plazas de estacionamiento. La práctica permite que **cuatro grupos trabajen por separado**, cada uno con su cuenta Linux, su servidor y su puerto.
@@ -76,3 +121,5 @@ La prueba de geometría regenera los dos archivos de posiciones de ejemplo. Las 
 Las claves de firma, contraseñas, tokens, entornos virtuales y productos temporales de compilación quedan fuera del repositorio. La APK de clase se conserva con su firma existente. Para recompilar una actualización compatible hay que disponer de la clave original fuera de GitHub; una firma nueva requiere desinstalar la app anterior y pierde sus ajustes.
 
 La API actual ofrece consultas de datos simulados sin autenticación de usuario. Las cuentas Linux y Tailscale se usan para administrar el equipo. El contrato de consulta está en [android/fuente/api/CONTRATO.md](android/fuente/api/CONTRATO.md).
+
+</details>
