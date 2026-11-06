@@ -27,7 +27,7 @@ if ! tailscale ip -4; then
   echo 'Falta autorizar la Raspberry: ejecutar sudo tailscale up y repetir.'
   exit 1
 fi
-if ! command -v cloudflared >/dev/null 2>&1; then
+if ! type -P cloudflared >/dev/null 2>&1; then
   sudo install -d -m 0755 /usr/share/keyrings
   curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg \
     | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
@@ -37,9 +37,31 @@ if ! command -v cloudflared >/dev/null 2>&1; then
   sudo apt-get update
   sudo apt-get install -y cloudflared
 fi
-if [ "$(command -v cloudflared)" != /usr/bin/cloudflared ]; then
-  echo 'Esta plantilla requiere /usr/bin/cloudflared. Revisar la ruta antes de continuar.'
+CF_BIN_PI2=$(type -P cloudflared || true)
+if [ ! -x "$CF_BIN_PI2" ]; then
+  echo 'Falta un ejecutable cloudflared en la ruta del sistema.'
   exit 1
+fi
+TUNEL_INSTALADO_PI2=/etc/systemd/system/estacionamiento-tunel@.service
+if [ -r "$TUNEL_INSTALADO_PI2" ]; then
+  CF_BIN_INSTALADO_PI2=$(sed -nE \
+    's#^ExecStart=(/(usr/(local/)?)?s?bin/cloudflared)[[:blank:]].*$#\1#p' \
+    "$TUNEL_INSTALADO_PI2")
+  if [ -x "$CF_BIN_INSTALADO_PI2" ]; then
+    CF_BIN_PI2=$CF_BIN_INSTALADO_PI2
+  fi
+fi
+printf 'Cloudflared: %s\n' "$CF_BIN_PI2"
+WEB_DIST_PI2="$ORIGEN_PI2/web_dist"
+WEB_ARCHIVOS_PI2=(app.js core.js ucu-map.js style.css safe-layout.css
+ cliente-web.js iphone.css manifest.webmanifest icono.png index.html)
+if [ -f "$ORIGEN_PI2/../android/fuente/assets/index.html" ]; then
+  python3 "$ORIGEN_PI2/preparar_web.py"
+fi
+if [ -f "$WEB_DIST_PI2/index.html" ]; then
+  for archivo in "${WEB_ARCHIVOS_PI2[@]}"; do
+    test -f "$WEB_DIST_PI2/$archivo" || { echo "Falta el recurso web $archivo"; exit 1; }
+  done
 fi
 echo '=== Cuentas y carpetas privadas ==='
 for numero in 1 2 3 4; do
@@ -65,12 +87,20 @@ for numero in 1 2 3 4; do
   sudo install -d -o "$cuenta" -g "$cuenta" -m 0750 "/home/$cuenta/PI2"
 done
 echo '=== Revisar y registrar plantillas sin reiniciar ==='
+TEMP_TUNEL_PI2=$(mktemp)
+trap 'rm -f -- "$TEMP_TUNEL_PI2"' EXIT
+sed "s|^ExecStart=/usr/bin/cloudflared |ExecStart=$CF_BIN_PI2 |" \
+  "$ORIGEN_PI2/estacionamiento-tunel@.service" > "$TEMP_TUNEL_PI2"
 # Si una plantilla ya fue personalizada, se detiene antes de cambiarla.
 for plantilla in estacionamiento@.service estacionamiento-tunel@.service; do
+  origen="$ORIGEN_PI2/$plantilla"
+  if [ "$plantilla" = estacionamiento-tunel@.service ]; then
+    origen="$TEMP_TUNEL_PI2"
+  fi
   destino="/etc/systemd/system/$plantilla"
   if sudo test -f "$destino"; then
     # Comparar contenido semantico: el instalador anterior usa ExecStart en una linea.
-    if ! sudo python3 - "$ORIGEN_PI2/$plantilla" "$destino" <<'PY'
+    if ! sudo python3 - "$origen" "$destino" <<'PY'
 import re, sys
 def normalizar(path):
     with open(path, encoding="utf-8") as f:
@@ -84,7 +114,7 @@ PY
       exit 1
     fi
   else
-    sudo install -o root -g root -m 0644 "$ORIGEN_PI2/$plantilla" "$destino"
+    sudo install -o root -g root -m 0644 "$origen" "$destino"
   fi
 done
 sudo systemctl daemon-reload
@@ -94,12 +124,18 @@ sudo install -d -o root -g root -m 0755 "$BASE_PI2"
 for archivo in servidor_estacionamiento.py requirements.txt mi_grupo.py; do
   sudo install -o root -g root -m 0644 "$ORIGEN_PI2/$archivo" "$BASE_PI2/$archivo"
 done
+if [ -f "$WEB_DIST_PI2/index.html" ]; then
+  sudo install -d -o root -g root -m 0755 "$BASE_PI2/web"
+  for archivo in "${WEB_ARCHIVOS_PI2[@]}"; do
+    sudo install -o root -g root -m 0644 "$WEB_DIST_PI2/$archivo" "$BASE_PI2/web/$archivo"
+  done
+fi
 sudo install -o root -g root -m 0755 \
  "$ORIGEN_PI2/estacionamiento_grupo_admin.py" \
  /usr/local/sbin/estacionamiento-grupo
 sudo python3 -I -m py_compile /usr/local/sbin/estacionamiento-grupo
 TEMP_PI2=$(mktemp)
-trap 'rm -f -- "$TEMP_PI2"' EXIT
+trap 'rm -f -- "$TEMP_TUNEL_PI2" "$TEMP_PI2"' EXIT
 for numero in 1 2 3 4; do
   printf 'grupo%s ALL=(root) NOPASSWD: /usr/local/sbin/estacionamiento-grupo\n' \
     "$numero" >> "$TEMP_PI2"

@@ -71,6 +71,36 @@ sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
 
 Comunicar la huella a los estudiantes para la primera conexión. Una alerta de cambio de clave requiere verificar el equipo antes de actualizar el registro de la PC.
 
+## Preparar la app web para iPhone
+
+Descargar y extraer el ZIP actualizado de GitHub. Abrir PowerShell en la carpeta que contiene `rpi` y `android`. Con Python disponible en Windows, ejecutar estos comandos.
+
+```powershell
+python .\rpi\preparar_web.py
+Test-Path .\rpi\web_dist\index.html
+```
+
+El segundo comando debe devolver `True`. Desde ese mismo PowerShell, copiar la carpeta `rpi` a un directorio separado en la Raspberry. Usar la IP Tailscale actual si cambió.
+
+```powershell
+$ipRpiCurso = '100.105.182.81'
+ssh "ucu2026@$ipRpiCurso" 'mkdir -p ~/PI2_web'
+scp -r .\rpi "ucu2026@${ipRpiCurso}:PI2_web/"
+```
+
+Dentro de la Raspberry como `ucu2026`, ejecutar la preparación y comprobar que se publicó el inicio de la interfaz.
+
+```bash
+bash ~/PI2_web/rpi/preparar_grupos_independientes.sh
+ls -l /usr/local/share/estacionamiento-ucu/web/index.html
+```
+
+La preparación instala los archivos de la interfaz común y habilita `publicar-web`.
+
+Las instalaciones nuevas abren `/app/` en el dominio HTTPS del grupo. Para proyectos existentes, cada grupo puede ejecutar `publicar-web` y abrir `/static/estaciona/index.html` en su dominio actual. Ese acceso usa la ruta de archivos estáticos del servidor del curso. Si el grupo restaura un respaldo anterior, puede volver a ejecutar `publicar-web`.
+
+Prueba de clase en Safari. Comprobar el equipo, el mapa, las seis plazas y el historial. Después agregar el ícono a Inicio. [Pasos para los estudiantes](../EMPEZAR_AQUI.md#iphone)
+
 ## Recorrido y criterios de finalización
 
 La primera práctica está en `EMPEZAR_AQUI.md`: conexión por cuenta propia, instalación o uso de una copia existente, comprobación LOCAL, comprobación HTTPS y seis plazas visibles en la app con demostración local desactivada.

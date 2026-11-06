@@ -4,7 +4,7 @@
 
 ### [Abrir la guía paso a paso](EMPEZAR_AQUI.md)
 
-**Objetivo de la primera práctica:** ver en el celular las seis plazas con los datos de su propio servidor.
+**Objetivo de la primera práctica:** ver en Android o iPhone las seis plazas con los datos de su propio servidor.
 
 La Raspberry Pi y las cuatro cuentas de grupo están preparadas. Cada grupo entra desde su PC por Tailscale y trabaja en su propia cuenta. La guía explica qué copiar, dónde escribirlo y qué resultado debe aparecer.
 
@@ -15,9 +15,11 @@ La Raspberry Pi y las cuatro cuentas de grupo están preparadas. Cada grupo entr
 | 3. Instalar la copia del grupo | Dentro de la Raspberry |
 | 4. Comprobar las seis plazas | Dentro de la Raspberry |
 | 5. Obtener la dirección del servidor | Dentro de la Raspberry |
-| 6. Conectar la aplicación | Teléfono Android |
+| 6. Abrir la aplicación | Android o iPhone |
 
 **Seguir [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md) en ese orden.** Si la copia ya estaba instalada, la guía indica cómo continuar conservando el trabajo existente.
+
+**En iPhone**, abrir en Safari el enlace HTTPS del grupo con la ruta `/app/` al final y agregarlo a Inicio. Para un servidor ya instalado, usar `publicar-web` desde la cuenta del grupo. [Pasos para iPhone](EMPEZAR_AQUI.md#iphone)
 
 ## Ayuda y siguiente práctica
 
@@ -64,6 +66,7 @@ GitHub conserva y distribuye el código y la documentación. El servidor Python 
 | [rpi/](rpi/) | Servidor Flask/Waitress, instaladores, administración por grupo, pruebas y servicios systemd. |
 | [android/Estaciona-Salto-UCU-0.1.3.apk](android/Estaciona-Salto-UCU-0.1.3.apk) | Aplicación Android de clase ya compilada; requiere Android 8 o posterior. |
 | [android/fuente/](android/fuente/) | Código Java, HTML, CSS y JavaScript de la app, recursos y compilador PowerShell. |
+| [rpi/web/](rpi/web/) | Conexión web e instalación en iPhone. La interfaz reutiliza el mapa, las plazas y el historial de Android. |
 | [laminas/Estacionamiento_UCU_Completo_A3.pdf](laminas/Estacionamiento_UCU_Completo_A3.pdf) | Manual A3 completo. |
 | [GUIA_TRABAJO_INDEPENDIENTE.md](GUIA_TRABAJO_INDEPENDIENTE.md) | Preparación docente y trabajo independiente de los cuatro grupos. |
 | [GUIA_DEL_ZIP.md](GUIA_DEL_ZIP.md) | Recorrido detallado por los archivos y comandos de la entrega original. |
@@ -111,6 +114,7 @@ La APK conserva una dirección temporal antigua como valor inicial: cambiarla en
 ```powershell
 python -m unittest discover -s pruebas -v
 node android/fuente/tests/core.test.js
+node pruebas/test_app_web.cjs
 node android/fuente/tests/geometry.cjs
 ```
 

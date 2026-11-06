@@ -93,7 +93,27 @@ def instalar(cuenta):
     dependencias(proyecto)
     controlar("activar")
     print(f"Instalacion de {cuenta.usuario} lista. Puerto {5000 + cuenta.numero}.")
-    print("Ejecutar comprobar; despues obtener url y conectar la APK.")
+    print("Ejecutar comprobar, obtener url y abrir la app en el telefono.")
+
+
+def publicar_web(cuenta):
+    if not (cuenta.proyecto / "servidor_estacionamiento.py").is_file():
+        raise ValueError("Primero instalar el proyecto.")
+    referencia = (FUENTE / "web").resolve()
+    if not (referencia / "index.html").is_file():
+        raise ValueError("El docente debe preparar la interfaz web en la Raspberry.")
+    static = cuenta.proyecto / "static"
+    if static.is_symlink():
+        raise ValueError("Revisar la carpeta static del proyecto con el docente.")
+    static.mkdir(exist_ok=True)
+    acceso = static / "estaciona"
+    try:
+        acceso.symlink_to(referencia, target_is_directory=True)
+    except FileExistsError:
+        if not acceso.is_symlink() or acceso.resolve() != referencia:
+            raise ValueError("La ruta static/estaciona ya pertenece al proyecto.")
+    print("App web habilitada en /static/estaciona/index.html.")
+    print("Abrir esa ruta a continuación del dominio que informa el comando url.")
 
 
 def validar_estado(d, grupo):
@@ -247,7 +267,7 @@ def main():
     comandos = parser.add_subparsers(dest="accion", required=True)
     for accion in ("instalar", "estado", "iniciar", "detener", "reiniciar",
                    "mensajes", "url", "respaldar", "listar-respaldos",
-                   "preparar-entorno"):
+                   "preparar-entorno", "publicar-web"):
         comandos.add_parser(accion)
     prueba = comandos.add_parser("comprobar")
     prueba.add_argument("--publica", action="store_true")
@@ -257,6 +277,8 @@ def main():
     cuenta = cuenta_actual()
     if opciones.accion == "instalar":
         instalar(cuenta)
+    elif opciones.accion == "publicar-web":
+        publicar_web(cuenta)
     elif opciones.accion == "preparar-entorno":
         if not (cuenta.proyecto / "servidor_estacionamiento.py").is_file():
             raise ValueError("Primero instalar el proyecto.")

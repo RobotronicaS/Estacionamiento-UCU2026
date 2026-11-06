@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 from collections import deque
 from datetime import datetime, timezone
+from pathlib import Path
 from threading import Event, Lock, Thread
 
 VIGENCIA = 20
@@ -67,7 +68,7 @@ class Estacionamiento:
 
 
 def crear_app(datos):
-    from flask import Flask, jsonify, request
+    from flask import Flask, jsonify, redirect, request, send_from_directory
     from werkzeug.exceptions import HTTPException
     app = Flask(__name__)
     app.json.ensure_ascii = False
@@ -109,6 +110,19 @@ def crear_app(datos):
                        aviso=AVISO, simulado=True, plazas=6,
                        rutas=[f"/api/estado?grupo={datos.grupo}",
                               f"/api/historial?grupo={datos.grupo}&limite=60"])
+
+    interfaz = Path(__file__).resolve().with_name("web_dist")
+    if not interfaz.is_dir():
+        interfaz = Path("/usr/local/share/estacionamiento-ucu/web")
+
+    @app.get("/app")
+    def acceso_web():
+        return redirect("/app/", code=308)
+
+    @app.get("/app/")
+    @app.get("/app/<path:archivo>")
+    def app_web(archivo="index.html"):
+        return send_from_directory(interfaz, archivo)
 
     @app.get("/api/estado")
     def estado():

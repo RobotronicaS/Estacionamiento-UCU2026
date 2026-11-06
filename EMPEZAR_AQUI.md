@@ -2,7 +2,7 @@
 
 [Inicio](README.md) · [Ayuda si aparece un error](docs/AYUDA_ESTUDIANTES.md)
 
-**Meta:** entrar con la cuenta de su grupo, hacer funcionar su servidor en la Raspberry y ver sus datos en la app Android.
+**Meta:** entrar con la cuenta de su grupo, hacer funcionar su servidor en la Raspberry y ver sus datos en Android o iPhone.
 
 La Raspberry y las cuentas `grupo1`, `grupo2`, `grupo3` y `grupo4` ya están preparadas. El docente les entrega el número y la contraseña de su grupo. Cada grupo realiza estos pasos por separado.
 
@@ -12,7 +12,7 @@ Necesitan:
 
 - Una PC Windows con Internet y Tailscale conectado con el acceso autorizado para el curso.
 - La cuenta y contraseña de su grupo en la Raspberry.
-- Un teléfono Android 8 o posterior con Internet.
+- Un teléfono con Internet. Usen Android 8 o posterior para la APK, o Safari en iPhone para la app web.
 - Acceso a este repositorio en GitHub. Si aparece 404, consultar [la ayuda de acceso](docs/AYUDA_ESTUDIANTES.md#github).
 
 Hay tres lugares de trabajo:
@@ -21,7 +21,7 @@ Hay tres lugares de trabajo:
 | --- | --- |
 | **PC WINDOWS** | En PowerShell de su PC. |
 | **RASPBERRY** | En la misma ventana, después de entrar por SSH. El inicio de la línea mostrará `grupo1@...`, `grupo2@...`, etc. |
-| **TELÉFONO** | En la aplicación Android. |
+| **TELÉFONO** | En la aplicación Android o en Safari del iPhone. |
 
 Copiar **un comando por vez** y presionar Enter. Copiar solo lo que está dentro del bloque de comandos. Los cuadros de “Resultado esperado” se leen; no se ejecutan.
 
@@ -138,18 +138,34 @@ python3 /usr/local/share/estacionamiento-ucu/mi_grupo.py comprobar --publica
 
 Pueden pegar la dirección base en el navegador de la PC. Debe mostrar datos en texto con el número de su grupo y `simulado: true`. **Ese texto es una respuesta normal del servidor.** La pantalla con el mapa se abre en la app del teléfono.
 
-## 6. Conectar la app Android
+## 6. Abrir la app en el teléfono
 
 **Lugar: TELÉFONO.**
 
-### Instalar la app
+### iPhone
+
+1. Abrir **Safari** y pegar la dirección HTTPS que obtuvieron en el punto 5, con `/app/` al final. Por ejemplo, `https://TU-TUNEL.trycloudflare.com/app/`.
+2. Verificar que aparezcan el número de su equipo y las seis plazas. El grupo se toma del enlace.
+3. Tocar **Compartir → Agregar a Inicio**. Si aparece **Abrir como app web**, activarlo. Tocar **Agregar** y probar el ícono de Estaciona UCU.
+
+Si la copia de su grupo ya estaba instalada y `/app/` devuelve 404, ejecutar el comando de publicación en su sesión SSH de la Raspberry.
+
+```bash
+python3 /usr/local/share/estacionamiento-ucu/mi_grupo.py publicar-web
+```
+
+Luego abrir la misma dirección HTTPS del punto 5 con `/static/estaciona/index.html` al final. El comando usa la carpeta de archivos estáticos del grupo y conserva el servidor que tienen en ejecución. Si cambia el dominio del túnel, agregar a Inicio la dirección nueva.
+
+### Android
+
+#### Instalar la app
 
 1. En la PC, abrir `android` dentro del proyecto descargado.
 2. Copiar `Estaciona-Salto-UCU-0.1.3.apk` al teléfono, por ejemplo por USB, a su carpeta Descargas.
 3. En el teléfono, abrir Archivos o Mis archivos, entrar en Descargas y tocar la APK para instalarla. Si Android solicita autorizar esa instalación, hacerlo solo para la aplicación que está abriendo este archivo del curso.
 4. Si esa versión de la app ya está instalada, abrirla y seguir con Ajustes.
 
-### Elegir su servidor
+#### Elegir su servidor
 
 1. Abrir la app y entrar en **Ajustes**.
 2. **Desactivar Modo demostración.**
@@ -170,8 +186,8 @@ Primero comprobar con Internet en el teléfono. Para confirmar el acceso desde f
 - [ ] Entré con la cuenta de mi grupo.
 - [ ] La comprobación LOCAL informó OK para mi grupo.
 - [ ] La comprobación HTTPS informó OK para mi grupo.
-- [ ] Elegí el mismo equipo en la app y pegué mi URL actual.
-- [ ] La app muestra las seis plazas y sus cambios con la demostración local desactivada.
+- [ ] Abrí la app con la URL actual de mi grupo.
+- [ ] La app muestra las seis plazas y sus cambios con los datos del servidor.
 
 Anotar su grupo y la URL actual, y conservar una captura del resultado LOCAL y otra de la app para mostrarlas al docente. Las contraseñas no forman parte de la entrega.
 

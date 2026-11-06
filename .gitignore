@@ -28,3 +28,4 @@ anteriores/
 *.tmp
 .DS_Store
 Thumbs.db
+rpi/web_dist/
