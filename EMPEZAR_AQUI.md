@@ -144,17 +144,7 @@ Pueden pegar la dirección base en el navegador de la PC. Debe mostrar datos en 
 
 ### iPhone
 
-1. Abrir **Safari** y pegar la dirección HTTPS que obtuvieron en el punto 5, con `/app/` al final. Por ejemplo, `https://TU-TUNEL.trycloudflare.com/app/`.
-2. Verificar que aparezcan el número de su equipo y las seis plazas. El grupo se toma del enlace.
-3. Tocar **Compartir → Agregar a Inicio**. Si aparece **Abrir como app web**, activarlo. Tocar **Agregar** y probar el ícono de Estaciona UCU.
-
-Si la copia de su grupo ya estaba instalada y `/app/` devuelve 404, ejecutar el comando de publicación en su sesión SSH de la Raspberry.
-
-```bash
-python3 /usr/local/share/estacionamiento-ucu/mi_grupo.py publicar-web
-```
-
-Luego abrir la misma dirección HTTPS del punto 5 con `/static/estaciona/index.html` al final. El comando usa la carpeta de archivos estáticos del grupo y conserva el servidor que tienen en ejecución. Si cambia el dominio del túnel, agregar a Inicio la dirección nueva.
+Usar la [guía de iPhone para estudiantes](docs/GUIA_IPHONE_ESTUDIANTES.md) con la dirección de tu grupo del punto 5. Incluye el acceso desde Safari, el ícono en Inicio y el procedimiento para copias instaladas antes de la actualización.
 
 ### Android
 
@@ -209,6 +199,6 @@ python3 /usr/local/share/estacionamiento-ucu/mi_grupo.py comprobar
 python3 /usr/local/share/estacionamiento-ucu/mi_grupo.py url
 ```
 
-La instalación se hace una vez. Si el túnel se reinicia y la URL cambió, actualizarla en Ajustes de la app.
+La instalación se hace una vez. Si cambia la URL del túnel, actualizarla en Ajustes de Android. En iPhone, abrir el enlace nuevo en Safari y agregarlo a Inicio.
 
 **Cuando esta práctica funcione:** seguir con [el primer cambio y los respaldos](docs/PRIMER_CAMBIO_Y_RESPALDO.md).

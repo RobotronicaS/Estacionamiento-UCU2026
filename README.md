@@ -19,7 +19,10 @@ La Raspberry Pi y las cuatro cuentas de grupo están preparadas. Cada grupo entr
 
 **Seguir [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md) en ese orden.** Si la copia ya estaba instalada, la guía indica cómo continuar conservando el trabajo existente.
 
-**En iPhone**, abrir en Safari el enlace HTTPS del grupo con la ruta `/app/` al final y agregarlo a Inicio. Para un servidor ya instalado, usar `publicar-web` desde la cuenta del grupo. [Pasos para iPhone](EMPEZAR_AQUI.md#iphone)
+### App para iPhone
+
+- [Estudiantes · abrir la app en Safari y agregarla a Inicio](docs/GUIA_IPHONE_ESTUDIANTES.md)
+- [Docente · publicar la app y verificar los cuatro grupos](docs/GUIA_IPHONE_DOCENTE.md)
 
 ## Ayuda y siguiente práctica
 
